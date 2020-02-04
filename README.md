@@ -32,3 +32,4 @@ Once you press enter, the results will be printed in your terminal and the proce
 - Review TypeScript code style. It's my first TypeScript project so there might other best practices to implement.
 - Separate the [Solver](./src/classes/solver.class.ts) and the `Parser` in different classes to simplify testing and allow the Solver to use a different type of Parsers (eg. from a txt file).
 - Improve calculations complexity by using the BFS algorithm.
+- Handle parsing errors in the [parse](./src/classes/solver.class.ts#L30) function.
