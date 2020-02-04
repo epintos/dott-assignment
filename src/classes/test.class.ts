@@ -24,15 +24,17 @@ export class Test {
 
     public initializeSolution(): void {
       for (let i = 0; i < this.n; i++) {
+        this.solution.push([]);
         for (let j = 0; j < this.m; j++) {
-          this.solution[i][j] = MAX_LENGTH * MAX_LENGTH;
+          this.solution[i].push(MAX_LENGTH + MAX_LENGTH);
         }
       }
     }
 
     public printSolution() {
       this.solution.forEach(element => {
-        console.log(element);
+        console.log(element.join(' '));
       });
+      console.log('\n');
     }
   }
