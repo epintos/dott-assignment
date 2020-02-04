@@ -26,10 +26,12 @@ export class TestsHandler {
         this.tests = [];
     }
 
+    // Adds a new test to the instance. N and M are the dimensions of the Test data
     public addTest(n: number, m: number): void {
        this.tests.push(new Test(n, m));
     }
 
+    // Returns true if all the tests have the total amount of columns
     public testsComplete(): boolean {
         return this.testsNumber === this.tests.length && this.tests.every(test => test.isComplete());
     }
@@ -42,6 +44,8 @@ export class TestsHandler {
 		this._testsNumber = value;
     }
 
+    // Returns true if the last Test has all the amount of columns.
+    // Returns true if there are not Tests instances.
     public isLastComplete(): boolean {
         const lastTest = this.lastTest();
         if (lastTest === undefined) {
@@ -52,6 +56,8 @@ export class TestsHandler {
         
     }
 
+    // Returns the last Test added.
+    // Returns undefined if there are no Tests.
     public lastTest(): Test | undefined {
         if (this.tests.length === 0) {
             return undefined;

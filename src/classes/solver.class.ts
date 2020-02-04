@@ -25,6 +25,8 @@ export class Solver {
 		this.parse();
     }
 
+    // Parses the Standard Input for the users test examples
+    // When the parsing finishes, it calculate the results and prints them in the Standard Output
     private parse(): void {
         this._readInterface.on('line', (line) => {
 			if (!this._finishedParsing) {
@@ -68,6 +70,7 @@ export class Solver {
         this._readInterface.write('\n');
     }
 
+    // Given a Test example, calculates the expect result
     private calculateDistance(test: Test): Promise<Test> {
         return new Promise(resolve => {
             setTimeout(() => {

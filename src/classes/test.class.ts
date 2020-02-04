@@ -25,10 +25,12 @@ export class Test {
         this.initializeSolution();
     }
   
+    // Returns true if the instance has m columns in data
     public isComplete(): boolean {
         return this.n === this.data.length;
     }
 
+    // Adds a new column to data
     public addColumn(column: number[]): void | never {
         this.data.push(column);
     }
