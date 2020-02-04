@@ -27,7 +27,7 @@ export class TestsHandler {
     public isLastComplete(): boolean {
         const lastTest = this.lastTest();
         if (lastTest === undefined) {
-         	 return true;
+         	return true;
         } else {
 			return lastTest.isComplete();
         }
@@ -35,14 +35,10 @@ export class TestsHandler {
     }
 
     public lastTest(): Test | undefined {
-		if (this.tests.length === 0) {
-			return undefined;
-		} else {
-			return this.tests[this.tests.length - 1];
-		}
-    }
-
-    public initializeSolutions(): void {
-     	this.tests.forEach(test => test.initializeSolution());
+        if (this.tests.length === 0) {
+            return undefined;
+        } else {
+            return this.tests[this.tests.length - 1];
+        }
     }
 }

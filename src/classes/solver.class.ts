@@ -50,7 +50,6 @@ export class Solver {
     }
 
     private async calculateDistances(){
-        this._testsHandler.initializeSolutions();
         const promises: Promise<Test>[] = [];
         this._testsHandler.tests.forEach(test => promises.push(this.calculateDistance(test)));
         const tests = await Promise.all(promises);

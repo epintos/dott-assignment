@@ -11,6 +11,7 @@ export class Test {
         this.m = m;
         this.data = [];
         this.solution = [];
+        this.initializeSolution();
     }
   
     public isComplete(): boolean {
@@ -21,7 +22,7 @@ export class Test {
         this.data.push(column);
     }
 
-    public initializeSolution(): void {
+    private initializeSolution(): void {
 		for (let i = 0; i < this.n; i++) {
 			this.solution.push([]);
 			for (let j = 0; j < this.m; j++) {
