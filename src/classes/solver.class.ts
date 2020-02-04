@@ -2,6 +2,10 @@ import { TestsHandler, Test } from './index';
 import * as readline from 'readline';
 import { readSync } from 'fs';
 
+/*
+    Solver class parses the standard input tests and outputs the results
+*/
+
 export class Solver {
     private _testsHandler: TestsHandler
 	private _readInterface: readline.Interface

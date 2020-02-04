@@ -1,5 +1,22 @@
 import { Test } from './index';
 
+/*
+    TestHandler contalins all the input examples.
+    For example it might represent the following in the standard input:
+        2
+        3 4
+        0001
+        0011
+        0110
+
+        5 5
+        00010
+        00110
+        01100
+        00000
+        00000
+*/
+
 export class TestsHandler {
     private _testsNumber: number | undefined
     readonly tests: Test[]

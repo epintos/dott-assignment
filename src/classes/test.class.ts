@@ -1,3 +1,14 @@
+/*
+    Test represents a class that contains one input example.
+    For example it might represent the following in the standard input:
+        5 5
+        00010
+        00110
+        01100
+        00000
+        00000
+*/
+
 const MAX_LENGTH = 182;
 
 export class Test {
