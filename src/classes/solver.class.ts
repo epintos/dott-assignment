@@ -1,11 +1,18 @@
 import { TestsHandler, Test } from './index';
 import * as readline from 'readline';
+import { readSync } from 'fs';
 
 export class Solver {
     private testsHandler: TestsHandler
+    private readInterface: readline.Interface
 
     public constructor() {
         this.testsHandler = new TestsHandler();
+        this.readInterface = readline.createInterface({
+          input: process.stdin,
+          output: process.stdout,
+          terminal: true,
+        });
     }
 
     public run(): void {
@@ -13,31 +20,20 @@ export class Solver {
     }
 
     private parse(): void {
-        const rl = readline.createInterface({
-            input: process.stdin,
-            output: process.stdout,
-            terminal: false,
-        });
-
-        rl.on('line', (line) => {
+      this.readInterface.on('line', (line) => {
             if (this.testsHandler.testsNumber === undefined) {
-              // console.log('Creating Main: ' + line);
               this.testsHandler.testsNumber = parseInt(line, 10);
             } else {
               let newLine: string[] = line.split(' ');
               if(newLine.length === 1 && newLine[0] === '') { // Just an Enter
                 if (this.testsHandler.testsComplete()) {
-                  // console.log('End of Parsing: ' + line);
-                  // console.log(main.tests);
-                  this.calculateDistances();
-                rl.close();
+                  this.calculateDistances().then(() => this.readInterface.close())
+                  // rl.close();
                 }
               } else {
                 if (this.testsHandler.isLastComplete()) {
-                  // console.log('Adding new Test: ' + line);
                   this.testsHandler.addTest(parseInt(newLine[0], 10), parseInt(newLine[1], 10));
                 } else {
-                  // console.log('Adding columns to last test: ' + line);
                   newLine = line.split('');
                   const lastTestParsed = this.testsHandler.lastTest();
                   if (lastTestParsed !== undefined) {
@@ -49,13 +45,21 @@ export class Solver {
         });
     }
 
-    private calculateDistances(): void {
+    private calculateDistances(){
         this.testsHandler.initializeSolutions();
         const promises: Promise<Test>[] = [];
         this.testsHandler.tests.forEach(test => promises.push(this.calculateDistance(test)));
-        Promise.all(promises).then((tests) => {
-          tests.forEach(test => test.printSolution());
+        return Promise.all(promises).then((tests) => {
+          tests.forEach(test => this.printSolution(test));
         })
+    }
+
+    private printSolution(test: Test) {
+      test.solution.forEach(element => {
+        this.readInterface.write(element.join(' '));
+        this.readInterface.write('\n');
+      });
+      this.readInterface.write('\n');
     }
 
     private calculateDistance(test: Test): Promise<Test> {

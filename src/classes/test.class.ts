@@ -30,11 +30,4 @@ export class Test {
         }
       }
     }
-
-    public printSolution() {
-      this.solution.forEach(element => {
-        console.log(element.join(' '));
-      });
-      console.log('\n');
-    }
   }
