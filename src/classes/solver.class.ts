@@ -54,8 +54,8 @@ export class Solver {
         const promises: Promise<Test>[] = [];
         this.testsHandler.tests.forEach(test => promises.push(this.calculateDistance(test)));
         Promise.all(promises).then((tests) => {
-            tests.forEach(test => test.printSolution());
-          })
+          tests.forEach(test => test.printSolution());
+        })
     }
 
     private calculateDistance(test: Test): Promise<Test> {
@@ -66,7 +66,7 @@ export class Solver {
                         for (let k = 0; k < test.n; k++) {
                             for (let l = 0; l < test.m; l++) {
                                 if(test.data[k][l] === 1) {
-                                    test.solution[i][j] = Math.min(test.solution[i][j], Math.abs(i - k) + Math.abs( j - l));
+                                    test.solution[i][j] = Math.min(test.solution[i][j], Math.abs(i - k) + Math.abs(j - l));
                                 }
                             }
                         }
