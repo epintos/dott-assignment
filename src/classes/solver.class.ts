@@ -3,63 +3,66 @@ import * as readline from 'readline';
 import { readSync } from 'fs';
 
 export class Solver {
-    private testsHandler: TestsHandler
-    private readInterface: readline.Interface
+    private _testsHandler: TestsHandler
+	private _readInterface: readline.Interface
+	private _finishedParsing: boolean
 
     public constructor() {
-        this.testsHandler = new TestsHandler();
-        this.readInterface = readline.createInterface({
+        this._testsHandler = new TestsHandler();
+        this._readInterface = readline.createInterface({
           input: process.stdin,
           output: process.stdout,
-          terminal: true,
-        });
+		  terminal: true,
+		});
+		this._finishedParsing = false;
     }
 
     public run(): void {
-        this.parse();
+		this.parse();
     }
 
     private parse(): void {
-      this.readInterface.on('line', (line) => {
-            if (this.testsHandler.testsNumber === undefined) {
-              this.testsHandler.testsNumber = parseInt(line, 10);
-            } else {
-              let newLine: string[] = line.split(' ');
-              if(newLine.length === 1 && newLine[0] === '') { // Just an Enter
-                if (this.testsHandler.testsComplete()) {
-                  this.calculateDistances().then(() => this.readInterface.close())
-                  // rl.close();
-                }
-              } else {
-                if (this.testsHandler.isLastComplete()) {
-                  this.testsHandler.addTest(parseInt(newLine[0], 10), parseInt(newLine[1], 10));
-                } else {
-                  newLine = line.split('');
-                  const lastTestParsed = this.testsHandler.lastTest();
-                  if (lastTestParsed !== undefined) {
-                    lastTestParsed.addColumn(newLine.map(element => parseInt(element, 10)));
-                  }
-                }
-              }
-            }
+        this._readInterface.on('line', (line) => {
+			if (!this._finishedParsing) {
+				if (this._testsHandler.testsNumber === undefined) { // Parses first line
+					this._testsHandler.testsNumber = parseInt(line, 10);
+				} else {
+					let newLine: string[] = line.split(' ');
+					if(newLine.length === 1 && newLine[0] === '') { // Parses an Enter
+						if (this._testsHandler.testsComplete()) { // Detects that the parsing finished
+							this._finishedParsing = true;
+							this.calculateDistances().then(() => this._readInterface.close());
+						}
+				} else {
+						if (this._testsHandler.isLastComplete()) { // Detects a new test
+							this._testsHandler.addTest(parseInt(newLine[0], 10), parseInt(newLine[1], 10));
+						} else {
+							newLine = line.split('');
+							const lastTestParsed = this._testsHandler.lastTest();
+							if (lastTestParsed !== undefined) {
+								lastTestParsed.addColumn(newLine.map(element => parseInt(element, 10)));
+							}
+						}
+					}
+				}
+			}
         });
     }
 
-    private calculateDistances(){
-        this.testsHandler.initializeSolutions();
+    private async calculateDistances(){
+        this._testsHandler.initializeSolutions();
         const promises: Promise<Test>[] = [];
-        this.testsHandler.tests.forEach(test => promises.push(this.calculateDistance(test)));
-        return Promise.all(promises).then((tests) => {
-          tests.forEach(test => this.printSolution(test));
-        })
+        this._testsHandler.tests.forEach(test => promises.push(this.calculateDistance(test)));
+        const tests = await Promise.all(promises);
+		tests.forEach(test => this.printSolution(test));
     }
 
     private printSolution(test: Test) {
-      test.solution.forEach(element => {
-        this.readInterface.write(element.join(' '));
-        this.readInterface.write('\n');
-      });
-      this.readInterface.write('\n');
+        test.solution.forEach(element => {
+            this._readInterface.write(element.join(' '));
+            this._readInterface.write('\n');
+        });
+        this._readInterface.write('\n');
     }
 
     private calculateDistance(test: Test): Promise<Test> {

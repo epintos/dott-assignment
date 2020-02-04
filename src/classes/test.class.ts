@@ -7,27 +7,26 @@ export class Test {
     readonly solution: number[][]
   
     public constructor(n: number, m: number) {
-      this.n = n;
-      this.m = m;
-      this.data = [];
-      this.solution = [];
+        this.n = n;
+        this.m = m;
+        this.data = [];
+        this.solution = [];
     }
   
     public isComplete(): boolean {
         return this.n === this.data.length;
     }
 
-    public addColumn(column: number[]) {
-        // TODO: Raise error if column.length != this.m
+    public addColumn(column: number[]): void | never {
         this.data.push(column);
     }
 
     public initializeSolution(): void {
-      for (let i = 0; i < this.n; i++) {
-        this.solution.push([]);
-        for (let j = 0; j < this.m; j++) {
-          this.solution[i].push(MAX_LENGTH + MAX_LENGTH);
-        }
-      }
+		for (let i = 0; i < this.n; i++) {
+			this.solution.push([]);
+			for (let j = 0; j < this.m; j++) {
+				this.solution[i].push(MAX_LENGTH + MAX_LENGTH);
+			}
+      	}
     }
   }
