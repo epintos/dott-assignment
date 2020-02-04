@@ -4,7 +4,8 @@ export class TestsHandler {
     private _testsNumber: number | undefined
     readonly tests: Test[]
 
-    public constructor() {
+    public constructor(testNumber?: number) {
+        this._testsNumber = testNumber;
         this.tests = [];
     }
 
